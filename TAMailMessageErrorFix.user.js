@@ -2,7 +2,7 @@
 // @name            TAMailMessageErrorFix.js
 // @description     Fix an script error when writing a new message.
 // @author          VisiG
-// @version         0.1
+// @version         0.2
 // @namespace       https://prodgame*.alliances.commandandconquer.com/*/index.aspx*
 // @include         https://prodgame*.alliances.commandandconquer.com/*/index.aspx*
 // @updateURL       https://raw.githubusercontent.com/VisiG/TAMailMessageErrorFix/master/TAMailMessageErrorFix.user.js
