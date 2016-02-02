@@ -20,15 +20,24 @@
 								if (webfrontend.gui.mail.MailMessage.prototype.hasOwnProperty(key) && typeof(webfrontend.gui.mail.MailMessage.prototype[key]) === 'function') {  // reduced iterations from 20K to 12K
 									strFunction = webfrontend.gui.mail.MailMessage.prototype[key].toString();
 									if (strFunction.indexOf("this.kids") > -1) {
-										strFunction = strFunction.replace("this.kids", "dr");
-										webfrontend.gui.mail.MailMessage.prototype[key] = eval('(' + strFunction + ')');
-										console.log("TAMailMessageErrorFix: Replaced undefined field");
+                                        					keyBackup = key + "Base";
+										webfrontend.gui.mail.MailMessage.prototype[keyBackup] = webfrontend.gui.mail.MailMessage.prototype[key];
+                                        
+                                        					var matches = strFunction.match(/var (\S*)=this\.(.*)\.getChildren/);
+                                        					var arrayParent = matches[2];           
+                                						 webfrontend.gui.mail.MailMessage.prototype[key] = eval('(' + 
+                                                                                               'function ()' +
+                                                                                               '{this.kids = this.'+arrayParent+'.getChildren();' +
+                                                                                               'this.'+keyBackup+'();' +
+                                                                                               '}'
+                                                                                               + ')') ;
+										console.log("TAMailMessageErrorFix: fixed");
 										break;
 									}
 								}
 							}
 						} catch (e) {
-							window.setTimeout(TAMailMessageErrorFix_checkIfLoaded, 1000);
+                            				console.error("TAMailMessageErrorFix: " + e);
 						}
 					} else {
 						window.setTimeout(TAMailMessageErrorFix_checkIfLoaded, 1000);
